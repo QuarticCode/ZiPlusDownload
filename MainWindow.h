@@ -31,7 +31,6 @@ private:
     QTextEdit* logArea;
 
     QProcess* process;
-
 private slots:
     void browseFolder();
     void startDownload();

@@ -12,6 +12,7 @@
 
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QSettings>
 
 #include <QRegularExpression>
 
@@ -178,6 +179,15 @@ MainWindow::MainWindow(QWidget *parent)
         this,
         &MainWindow::startDownload
     );
+
+    QSettings settings("ZiPlus", "ZiPlusDownload");
+
+    folderInput->setText(
+        settings.value(
+            "download_folder",
+            ""
+        ).toString()
+    );
 }
 
 void MainWindow::browseFolder()
@@ -191,6 +201,16 @@ void MainWindow::browseFolder()
     if(!folder.isEmpty())
     {
         folderInput->setText(folder);
+
+        QSettings settings(
+            "ZiPlus",
+            "ZiPlusDownload"
+        );
+
+        settings.setValue(
+            "download_folder",
+            folder
+        );
     }
 }
 
@@ -237,6 +257,8 @@ void MainWindow::startDownload() {
         arguments << "mp3";
         arguments << "--audio-quality";
         arguments << "0";
+        arguments << "--embed-thumbnail";
+        arguments << "--add-metadata";
     } else {
         if (quality == "1080p")
         {
